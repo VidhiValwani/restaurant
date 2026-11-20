@@ -1,0 +1,75 @@
+import java.util.Scanner;
+
+public class SubstitutionMethod {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter n (power of 2): ");
+        int n = sc.nextInt();
+
+        System.out.print("Enter T(1): ");
+        int base = sc.nextInt();
+
+        if (n < 1 || (n & (n - 1)) != 0 || base < 0) {
+            System.out.println("Invalid input! Enter power of 2 only.");
+            sc.close();
+            return;
+        }
+
+        long startTime = System.nanoTime();
+
+        int levels = 0;
+        int temp = n;
+
+        while (temp > 1) {
+            temp /= 2;
+            levels++;
+        }
+
+        long total = 0;
+        int currentN = n;
+
+        System.out.println("\nLevel-wise calculation:");
+
+        for (int i = 0; i < levels; i++) {
+            long work = n;
+
+            System.out.println(
+                "Level " + i + ": " + currentN
+                + " subproblems, work = " + work
+            );
+
+            total += work;
+            currentN /= 2;
+        }
+
+        long leafWork = (long) n * base;
+        total += leafWork;
+
+        long endTime = System.nanoTime();
+
+        System.out.println("Leaf level work = " + leafWork);
+        System.out.println("Total work = " + total);
+
+        System.out.println("Time Complexity = O(n log n)");
+        System.out.println("Space Complexity = O(1) auxiliary");
+
+        printTime(endTime - startTime);
+
+        sc.close();
+    }
+
+    static void printTime(long elapsedNanos) {
+
+        System.out.println(
+            "Execution Time = " + elapsedNanos + " nanoseconds"
+        );
+
+        System.out.printf(
+            "Execution Time = %.6f milliseconds%n",
+            elapsedNanos / 1_000_000.0
+        );
+    }
+}
